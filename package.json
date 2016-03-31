@@ -1,6 +1,6 @@
 {
   "name": "gulp-i18n-extract",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Extracts I18N data from html pages.",
   "main": "index.js",
   "scripts": {

@@ -65,7 +65,7 @@ module.exports = function(i18nAttributeName) {
 			if(TreeAdapter.isTextNode(x)) content += TreeAdapter.getTextNodeContent(x);
 		});
 		
-		return content;
+		return content.trim();
 	}
 
 	return {		
