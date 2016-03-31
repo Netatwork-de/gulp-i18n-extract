@@ -59,6 +59,9 @@ exports.extract = function(outFile, options) {
 				var previousContent = fs.readFileSync(fileName);
 				existingExtracts = JSON.parse(previousContent) || {};
 			}	
+			else {
+				existingExtracts = {};
+			}
 			
 			extract = {};						
 		}			
