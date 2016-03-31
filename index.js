@@ -2,7 +2,6 @@
 
 var through = require('through2');
 var gutil = require('gulp-util');
-var htmlParse = require('html-parse-stringify');
 var path = require('path');
 var fs = require('fs');
 var moment = require('moment');
@@ -81,22 +80,28 @@ exports.extract = function(outFile, options) {
 			var newContent = {};
 			var hasContent = false;
 			
-			plugIn.parse(file, (key, value) => {
-									
-				var extractedKey = fileContent.content[key] || newContent[key];
-				if(!extractedKey) {
-					extractedKey = { "content" : value, "lastModified": moment(),"translations":{} };
-				}
-				else {
-					if(extractedKey.content != value) {
-						extractedKey.content = value;
-						extractedKey.lastModified = moment()
-					}						
-				}
-				
-				newContent[key] = extractedKey;		
-				hasContent = true;								
-			});
+			try {			
+				gutil.log("Processing",src);
+				plugIn.parse(file, (key, value) => {
+										
+					var extractedKey = fileContent.content[key] || newContent[key];
+					if(!extractedKey) {
+						extractedKey = { "content" : value, "lastModified": moment(),"translations":{} };
+					}
+					else {
+						if(extractedKey.content != value) {
+							extractedKey.content = value;
+							extractedKey.lastModified = moment()
+						}						
+					}
+					
+					newContent[key] = extractedKey;		
+					hasContent = true;								
+				});
+			}
+			catch (e) {				
+				this.emit('error', new PluginError('gulp-i18n-extract', e, {showStack: true}));
+			}
 			
 			if(hasContent)
 			{
