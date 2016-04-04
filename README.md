@@ -8,7 +8,7 @@ This task ist part of the i18n toolchain:
 1. [Tag](to be implemented) text nodes in HTML with an i18n key attribute
 2. Extract i18n keys and values (This task)
 3. Translate
-4. [Compile](to be implemented) into language files for i18n like [Aurelia-i18n](https://github.com/aurelia/i18n)  
+4. [Compile](https://github.com/Netatwork-de/gulp-i18n-compile2) into language files for i18n like [Aurelia-i18n](https://github.com/aurelia/i18n)  
 
 ## Installation
 
