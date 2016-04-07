@@ -66,8 +66,8 @@ gulp.task('i18n-extract', function() {
 						"content":"<translated content>",
 						"lastModified":"<date of translation>"
 					}
-				}
-				"needsUpdate":<boolean>
+				},
+				"needsUpdate":"<boolean>"
 			}
 		}
 	}
