@@ -34,6 +34,24 @@ gulp.task('i18n-extract', function() {
 });
 ```
 
+## Options
+
+- `outFile` : string = `'i18nextract.json'`
+
+	Output file name. 
+
+- `plugIns` : object[] = `[ new i18n.html("t") ]`
+
+	Specify, which plug-in should be used on exctraction.
+	
+- `markUpdates` : boolean = `true`
+
+	If an extracted value has been changes or added, it will be marked with `"needsUpdate":true` .
+	
+- `defaultLanguages` : string[] = `["de"]`
+
+	Each default language will be added as translation, if missing.
+
 ##Output sturcture
 ```json
 {
@@ -43,12 +61,13 @@ gulp.task('i18n-extract', function() {
 			"<i18n key>": {
 				"content":"<extracted content>",
 				"lastModified":"<date of extration>",
-				"translation": {
+				"translations": {
 					"<language, 2letter iso>" : {
-						"content":"<translated content",
-						"lastModified":"<date of translation"
+						"content":"<translated content>",
+						"lastModified":"<date of translation>"
 					}
 				}
+				"needsUpdate":<boolean>
 			}
 		}
 	}

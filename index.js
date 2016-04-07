@@ -20,8 +20,11 @@ exports.extract = function(outFile, options) {
 	options = options || {};
 	
 	if(!options.plugIns || options.plugIns.lenght == 0) {
-		options.plugIns = [ htmlPlugIn ];
+		options.plugIns = [ new htmlPlugIn() ];
 	} 
+	
+	var markUpdates = options.markUpdates || true;
+	var defaultLanguages = options.defaultLanguages || ["de"];
 		
 	var fileName;
 	var cwd;
@@ -68,6 +71,7 @@ exports.extract = function(outFile, options) {
 		var ext = path.extname(file.path);
 		var name = path.basename(file.path, ext)
 		var src = path.relative(cwd, file.path);
+		var modifiedDate = moment();
 		
 		options.plugIns.filter((plugIn) => plugIn.canHandle(file.path))
 				   	   .forEach((plugIn) => {
@@ -86,14 +90,22 @@ exports.extract = function(outFile, options) {
 										
 					var extractedKey = fileContent.content[key] || newContent[key];
 					if(!extractedKey) {
-						extractedKey = { "content" : value, "lastModified": moment(),"translations":{} };
+						extractedKey = { "content" : value, "lastModified": modifiedDate,"translations":{} };
+						if(markUpdates) extractedKey["needsUpdate"] = true;
 					}
 					else {
 						if(extractedKey.content != value) {
 							extractedKey.content = value;
-							extractedKey.lastModified = moment()
+							extractedKey.lastModified = modifiedDate
+							if(markUpdates) extractedKey["needsUpdate"] = true;
 						}						
 					}
+					
+					defaultLanguages.forEach(lang => {
+						if(!extractedKey.translations[lang]) {
+							extractedKey.translations[lang] = { "content" : "", "lastModified": "" }
+						}
+					}, this);
 					
 					newContent[key] = extractedKey;		
 					hasContent = true;								
