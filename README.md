@@ -46,7 +46,7 @@ gulp.task('i18n-extract', function() {
 	
 - `markUpdates` : boolean = `true`
 
-	If an extracted value has been changes or added, it will be marked with `"needsUpdate":true` .
+	If an extracted value has been changed or added, it will be marked with `"needsUpdate":true` .
 	
 - `defaultLanguages` : string[] = `["de"]`
 
