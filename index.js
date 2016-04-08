@@ -23,6 +23,7 @@ exports.extract = function(outFile, options) {
 		options.plugIns = [ new htmlPlugIn() ];
 	} 
 	
+	var warnOnDuplicates = options.warnOnDuplicates  || true;
 	var markUpdates = options.markUpdates || true;
 	var defaultLanguages = options.defaultLanguages || ["de"];
 		
@@ -83,12 +84,19 @@ exports.extract = function(outFile, options) {
 			
 			var newContent = {};
 			var hasContent = false;
+			var extractedKeys = {};
 			
 			try {			
-				gutil.log("Processing",src);
+				//gutil.log("Processing",src);
 				plugIn.parse(file, (key, value) => {
+
+					if(warnOnDuplicates && extractedKeys[key]) {
+						gutil.log("Duplicate key",gutil.colors.yellow(key), "in", gutil.colors.yellow(src), "found.");
+						return;
+					}
 										
-					var extractedKey = fileContent.content[key] || newContent[key];
+					var extractedKey = fileContent.content[key] ||newContent[key] ;
+					
 					if(!extractedKey) {
 						extractedKey = { "content" : value, "lastModified": modifiedDate,"translations":{} };
 						if(markUpdates) extractedKey["needsUpdate"] = true;
@@ -107,6 +115,7 @@ exports.extract = function(outFile, options) {
 						}
 					}, this);
 					
+					extractedKeys[key] = key;
 					newContent[key] = extractedKey;		
 					hasContent = true;								
 				});

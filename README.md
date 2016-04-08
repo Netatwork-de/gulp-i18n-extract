@@ -51,6 +51,10 @@ gulp.task('i18n-extract', function() {
 - `defaultLanguages` : string[] = `["de"]`
 
 	Each default language will be added as translation, if missing.
+	
+- `warnOnDuplicates` : boolean = `true`
+
+	Created warnings if i18n keys are used twice.
 
 ##Output sturcture
 ```json
