@@ -24,7 +24,7 @@ module.exports = function(i18nAttributeName) {
 			value = getInnerText(element);
 		}
 		else {
-			value = element.attrs[targetAttribute];
+			value = getAttribute(element, targetAttribute);
 		}
 		
 		if(value) {
@@ -32,15 +32,16 @@ module.exports = function(i18nAttributeName) {
 		}
 	}
 	
-	function getI18NAttribute(element) {
+	function getAttribute(element, name) {
 		if(!TreeAdapter.isElementNode(element) || !element.attrs) return null;
 		
-		return element.attrs.find((x) => x.name == i18nAttributeName);				
+		return element.attrs.find((x) => x.name == name);				
 	}
-	
+		
 	function extractI18N(element, addToken) {
 		
-		var i18nAttribute = getI18NAttribute(element);	
+		var i18nAttribute = getAttribute(element,i18nAttributeName);	
+		
 		if(i18nAttribute) {	
 			
 			var attributeValue = i18nAttribute.value;
