@@ -27,9 +27,7 @@ module.exports = function(i18nAttributeName) {
 			value = getAttribute(element, targetAttribute);
 		}
 		
-		if(value) {
-			addToken(i18nKey, value);
-		}
+		addToken(i18nKey, value);
 	}
 	
 	function getAttribute(element, name) {
