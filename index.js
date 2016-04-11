@@ -7,6 +7,7 @@ var fs = require('fs');
 var moment = require('moment');
 var htmlPlugIn = require('./plugins/html');
 var jsonPlugIn = require('./plugins/json');
+var stringify = require('json-stable-stringify');
 
 var PluginError = gutil.PluginError;
 var File = gutil.File;
@@ -140,7 +141,7 @@ exports.extract = function(outFile, options) {
 				base: cwd,
 				path: fileName, 
 				cwd: cwd,
-				contents: new Buffer(JSON.stringify(extract, null, '\t'))
+				contents: new Buffer( stringify(extract, { space: '\t' }))
 			});
 					
 		this.push(extractFile);

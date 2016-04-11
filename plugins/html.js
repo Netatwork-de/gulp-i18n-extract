@@ -24,7 +24,7 @@ module.exports = function(i18nAttributeName) {
 			value = getInnerText(element);
 		}
 		else {
-			value = getAttribute(element, targetAttribute);
+			value = getAttribute(element, targetAttribute).value;
 		}
 		
 		addToken(i18nKey, value);
@@ -64,7 +64,7 @@ module.exports = function(i18nAttributeName) {
 			if(TreeAdapter.isTextNode(x)) content += TreeAdapter.getTextNodeContent(x);
 		});
 		
-		return content.trim();
+		return content.replace(/\s+/g, ' ').trim();
 	}
 
 	return {		
