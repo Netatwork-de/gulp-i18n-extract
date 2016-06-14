@@ -12,6 +12,8 @@ var stringify = require('json-stable-stringify');
 var PluginError = gutil.PluginError;
 var File = gutil.File;
 
+const obsoleteTranslationsProperty = "obsoleteTranslations";
+
 exports.html = htmlPlugIn;
 exports.json = jsonPlugIn;
 
@@ -27,6 +29,7 @@ exports.extract = function(outFile, options) {
 	var warnOnDuplicates = options.warnOnDuplicates  || true;
 	var markUpdates = options.markUpdates || true;
 	var defaultLanguages = options.defaultLanguages || ["de"];
+	var keepObsoleteTranslations = options.keepObsoleteTranslations || false;
 		
 	var fileName;
 	var cwd;
@@ -41,6 +44,7 @@ exports.extract = function(outFile, options) {
 	
 	var existingExtracts = null;
 	var extract = null;	
+	var obsoleteTranslations = null;
 	
 	function bufferContents(file, enc, cb) {
 			
@@ -74,6 +78,7 @@ exports.extract = function(outFile, options) {
 		var name = path.basename(file.path, ext)
 		var src = path.relative(cwd, file.path);
 		var modifiedDate = moment();
+		obsoleteTranslations = existingExtracts[obsoleteTranslationsProperty] || {};
 		
 		options.plugIns.filter((plugIn) => plugIn.canHandle(file.path))
 				   	   .forEach((plugIn) => {
@@ -96,7 +101,13 @@ exports.extract = function(outFile, options) {
 						return;
 					}
 										
-					var extractedKey = fileContent.content[key] ||newContent[key] ;
+					var extractedKey = fileContent.content[key];
+					if(extractedKey) {
+						delete fileContent.content[key];
+					}
+					else {
+						extractedKey = newContent[key];
+					}
 					
 					if(!extractedKey) {
 						extractedKey = { "content" : value, "lastModified": modifiedDate,"translations":{} };
@@ -127,6 +138,39 @@ exports.extract = function(outFile, options) {
 			
 			if(hasContent)
 			{
+				if(keepObsoleteTranslations) {
+					// Foreach remaining key in file
+					for(var key in fileContent.content) {
+						// Get obsolete key
+						var obsolete = fileContent.content[key];
+						
+						// Get or create obsolete translation object
+						var obsoleteTranslation = obsoleteTranslations[obsolete.content];
+						if(!obsoleteTranslation) {
+							obsoleteTranslation = {};
+							obsoleteTranslations[obsolete.content] = obsoleteTranslation;
+						}
+
+						// foreach translated language
+						for(var language in obsolete.translations) {
+							// Get translated text
+							var translatedText = obsolete.translations[language].content;
+
+							// Get or create language list
+							var translations = obsoleteTranslation[language];
+							if(!translations) {
+								translations = [];
+								obsoleteTranslation[language] = translations;
+							}
+
+							// Add if not in the list
+							if(!translations.find( x => x === translatedText)) {
+								translations.push(translatedText);
+							}
+						}
+					}
+				}
+
 				fileContent.content = newContent;
 				extract[name] = fileContent;
 			}
@@ -136,6 +180,9 @@ exports.extract = function(outFile, options) {
 	}
 
 	function endStream(cb) {
+		if(keepObsoleteTranslations) {
+			extract[obsoleteTranslationsProperty] = obsoleteTranslations;
+		}
 		var extractFile = new File(
 			{
 				base: cwd,
