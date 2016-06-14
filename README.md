@@ -56,6 +56,10 @@ gulp.task('i18n-extract', function() {
 
 	Created warnings if i18n keys are used twice.
 
+- `keepObsoleteTranslations` : boolean = 'false'
+
+	All translations from obsolete or deleted key will remain in the extract file as `obsoleteTranslations`. These texts will be groupd by the extracted contant and contain all found translations.
+
 ##Output sturcture
 ```json
 {
@@ -74,7 +78,19 @@ gulp.task('i18n-extract', function() {
 				"needsUpdate":"<boolean>"
 			}
 		}
-	}
+	},
+	"obsoleteTranslations": [
+		{
+			"key":"<original text>",
+			"translations":{
+				"<language, 2letter iso>": [
+					"<found translation for original text>",
+					"<found translation for original text>",
+					...
+				]
+			}
+		}
+	]
 }
 ```
 

@@ -44,7 +44,7 @@ exports.extract = function(outFile, options) {
 	
 	var existingExtracts = null;
 	var extract = null;	
-	var obsoleteTranslations = null;
+	var obsoleteTranslations = [];
 	
 	function bufferContents(file, enc, cb) {
 			
@@ -78,7 +78,7 @@ exports.extract = function(outFile, options) {
 		var name = path.basename(file.path, ext)
 		var src = path.relative(cwd, file.path);
 		var modifiedDate = moment();
-		obsoleteTranslations = existingExtracts[obsoleteTranslationsProperty] || {};
+		obsoleteTranslations = existingExtracts[obsoleteTranslationsProperty] || [];
 		
 		options.plugIns.filter((plugIn) => plugIn.canHandle(file.path))
 				   	   .forEach((plugIn) => {
@@ -145,10 +145,10 @@ exports.extract = function(outFile, options) {
 						var obsolete = fileContent.content[key];
 						
 						// Get or create obsolete translation object
-						var obsoleteTranslation = obsoleteTranslations[obsolete.content];
+						var obsoleteTranslation = obsoleteTranslations.find(x => x.key === obsolete.content);
 						if(!obsoleteTranslation) {
-							obsoleteTranslation = {};
-							obsoleteTranslations[obsolete.content] = obsoleteTranslation;
+							obsoleteTranslation = {"key":obsolete.content, "translations":{}};
+							obsoleteTranslations.push(obsoleteTranslation);
 						}
 
 						// foreach translated language
@@ -157,10 +157,10 @@ exports.extract = function(outFile, options) {
 							var translatedText = obsolete.translations[language].content;
 
 							// Get or create language list
-							var translations = obsoleteTranslation[language];
+							var translations = obsoleteTranslation.translations[language];
 							if(!translations) {
 								translations = [];
-								obsoleteTranslation[language] = translations;
+								obsoleteTranslation.translations[language] = translations;
 							}
 
 							// Add if not in the list
