@@ -26,10 +26,10 @@ exports.extract = function(outFile, options) {
 		options.plugIns = [ new htmlPlugIn() ];
 	} 
 	
-	var warnOnDuplicates = options.warnOnDuplicates  || true;
-	var markUpdates = options.markUpdates || true;
+	var warnOnDuplicates = (options.warnOnDuplicates !== undefined ? options.warnOnDuplicates : true);
+	var markUpdates = (options.markUpdates !== undefined ? options.markUpdates : true);
 	var defaultLanguages = options.defaultLanguages || ["de"];
-	var keepObsoleteTranslations = options.keepObsoleteTranslations || false;
+	var keepObsoleteTranslations = (options.keepObsoleteTranslations !== undefined ? options.keepObsoleteTranslations : false);
 		
 	var fileName;
 	var cwd;
