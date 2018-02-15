@@ -1,6 +1,5 @@
 'use strict';
 
-var gutil = require('gulp-util');
 var htmlParse = require('parse5');
 var path = require('path');
 var fs = require('fs');
