@@ -24,7 +24,10 @@ module.exports = function(i18nAttributeName) {
 			value = getInnerText(element);
 		}
 		else {
-			value = getAttribute(element, targetAttribute).value;
+			const attrib = getAttribute(element, targetAttribute);
+			if(attrib) {
+				value = attrib.value;
+			}
 		}
 		
 		addToken(i18nKey, value);
@@ -45,9 +48,10 @@ module.exports = function(i18nAttributeName) {
 			var attributeValue = i18nAttribute.value;
 			var i18nKeys = attributeValue.split(';');
 						
-			i18nKeys.forEach((i18nKey) => extractI18NKey(element, i18nKey, addToken));			
+			i18nKeys.forEach((i18nKey) => extractI18NKey(element, i18nKey, addToken));	
 		}
-		else if(element.childNodes && element.childNodes.length > 0) {
+		
+		if(element.childNodes && element.childNodes.length > 0) {
 			element.childNodes.forEach((x) => extractI18N(x, addToken), this);
 		}
 		else if(element.content) {
