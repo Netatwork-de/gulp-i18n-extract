@@ -1,16 +1,16 @@
 'use strict';
 
 var through = require('through2');
-var gutil = require('gulp-util');
 var path = require('path');
 var fs = require('fs');
 var moment = require('moment');
 var htmlPlugIn = require('./plugins/html');
 var jsonPlugIn = require('./plugins/json');
 var stringify = require('json-stable-stringify');
-
-var PluginError = gutil.PluginError;
-var File = gutil.File;
+var PluginError = require("plugin-error");
+var File = require("vinyl");
+var log = require("fancy-log");
+var colors = require("ansi-colors");
 
 const obsoleteTranslationsProperty = "obsoleteTranslations";
 
@@ -93,11 +93,11 @@ exports.extract = function(outFile, options) {
 			var extractedKeys = {};
 			
 			try {			
-				//gutil.log("Processing",src);
+				//log("Processing",src);
 				plugIn.parse(file, (key, value) => {
 
 					if(warnOnDuplicates && extractedKeys[key]) {
-						gutil.log("Duplicate key",gutil.colors.yellow(key), "in", gutil.colors.yellow(src), "found.");
+						log("Duplicate key",colors.yellow(key), "in", colors.yellow(src), "found.");
 						return;
 					}
 										

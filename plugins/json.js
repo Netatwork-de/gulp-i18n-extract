@@ -1,6 +1,5 @@
 'use strict';
 
-var gutil = require('gulp-util');
 var path = require('path');
 
 module.exports = function(extension) {
