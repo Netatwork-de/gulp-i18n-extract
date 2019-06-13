@@ -6,8 +6,9 @@ var fs = require('fs');
 
 var TreeAdapter = htmlParse.treeAdapters.default;
 
-module.exports = function(i18nAttributeName) {
+module.exports = function(i18nAttributeName, keyIgnoreFunction) {
 	i18nAttributeName = i18nAttributeName || "t";
+	const isIgnored = keyIgnoreFunction || (() => false);
 	
 	function extractI18NKey(element, i18nKey, addToken) {
 		var targetAttribute = "text";
@@ -45,9 +46,11 @@ module.exports = function(i18nAttributeName) {
 		if(i18nAttribute) {	
 			
 			var attributeValue = i18nAttribute.value;
-			var i18nKeys = attributeValue.split(';');
-						
-			i18nKeys.forEach((i18nKey) => extractI18NKey(element, i18nKey, addToken));	
+			
+			if(!isIgnored(attributeValue)) {
+				var i18nKeys = attributeValue.split(';');						
+				i18nKeys.forEach((i18nKey) => extractI18NKey(element, i18nKey, addToken));	
+			}
 		}
 		
 		if(element.childNodes && element.childNodes.length > 0) {

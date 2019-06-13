@@ -42,7 +42,7 @@ gulp.task('i18n-extract', function() {
 
 - `plugIns` : object[] = `[ new i18n.html("t") ]`
 
-	Specify, which plug-in should be used on exctraction.
+	Specify, which plug-in should be used on extraction.
 	
 - `markUpdates` : boolean = `true`
 
@@ -58,17 +58,17 @@ gulp.task('i18n-extract', function() {
 
 - `keepObsoleteTranslations` : boolean = 'false'
 
-	All translations from obsolete or deleted key will remain in the extract file as `obsoleteTranslations`. These texts will be groupd by the extracted contant and contain all found translations.
+	All translations from obsolete or deleted key will remain in the extract file as `obsoleteTranslations`. These texts will be grouped by the extracted content and contain all found translations.
 
-##Output sturcture
+##Output structure
 ```json
 {
 	"<filename w/o ext>": {
-		"src":"<realtive file path>",
+		"src":"<relative file path>",
 		"content": {
 			"<i18n key>": {
 				"content":"<extracted content>",
-				"lastModified":"<date of extration>",
+				"lastModified":"<date of extraction>",
 				"translations": {
 					"<language, 2letter iso>" : {
 						"content":"<translated content>",
@@ -95,10 +95,10 @@ gulp.task('i18n-extract', function() {
 ```
 
 # PlugIns
-There are two predefined plugins avilable to handle html and json files.
+There are two predefined plugins available to handle html and json files.
 
 ## HTML
-You can specifiy the attribute that is used to identify localizable strings. (Default: "t")
+You can specify the attribute that is used to identify localizable strings. (Default: "t")
 ```js
 var options = { plugIns:[ new i18n.html("t") ] };  
 ```
@@ -117,6 +117,13 @@ var options = { plugIns:[ new i18n.html("t") ] };
       t="[text]index.example;[title]index.exampleTooltip">
 	  Example text
 </span>
+```
++ Skip extraction of certain keys by providing ignore function in the second argument. In the following example, `index.${variable}` is not extracted.
+```js
+var options = { plugIns:[ new i18n.html("t", (key) => key.indexOf("${") >= 0) ] };  
+```   
+```html
+<input type="email" placeholder="Ignored for extraction" t="[placeholder]index.${variable}">
 ```
 
 ## JSON
