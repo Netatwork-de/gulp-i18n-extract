@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+  - "node"
+deploy:
+  on:
+    tags: true
+  - provider: releases
+    api_key: $GH_TOKEN
+    file_glob: true
+    file: "gulp-i18n-extract-*.tgz"
+    skip_cleanup: true
+  - provider: npm
+    email: $NPM_EMAIL
+    api_key: $NPM_TOKEN
