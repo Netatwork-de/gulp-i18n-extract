@@ -7,12 +7,4 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
-* **CI/CD:** Travis setup ([40e2d01](https://github.com/Netatwork-de/gulp-i18n-extract/commit/40e2d01))
-
-
-
-### 1.0.12-0 (2019-06-21)
-
-### Features
-
-* **CI/CD:** Travis setup ([40e2d01](https://github.com/Netatwork-de/gulp-i18n-extract/commit/40e2d01))
+* **Skip extraction of certain keys:** Fixing #3 ([30c9e7b](https://github.com/Netatwork-de/gulp-i18n-extract/commit/30c9e7b))
