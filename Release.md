@@ -10,5 +10,27 @@ This uses the [standard-version](https://github.com/conventional-changelog/stand
 
 In case you want to modify the release in some way, check the documentation of [standard-version](https://github.com/conventional-changelog/standard-version).
 
+## Examples
+
+- prepare a patch release
+  
+  ```bash
+  npm run prepare-release -- --release-as patch
+  ```
+  
+- prepare a minor release
+ 
+  ```bash
+  npm run prepare-release -- --release-as minor
+  ```
+  
+- prepare a major release
+
+  ```bash
+  npm run prepare-release -- --release-as major
+  ```
+
+## Note
+
 It does not by itself deploys the new version to anywhere.
 That is done automatically by Travis when the changes are pushed to master branch.
