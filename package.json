@@ -21,6 +21,6 @@
   },
   "devDependencies": {
     "jasmine": "^3.1.0",
-    "standard-version": "^6.0.1"
+    "standard-version": "^9.5.0"
   }
 }
